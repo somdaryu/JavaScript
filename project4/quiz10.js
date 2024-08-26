@@ -29,6 +29,8 @@ for (let i = 0; i < 10; i++) {
 console.log("10번 던진 결과:" + dice);
 
 //Q28
+//매개변수: times(반복 횟수)
+//리턴값 : arr(숫자3개가 담긴 배열)
 function rollDice(times){
   const arr =[];
   for(let i=0; i<3; i++){
