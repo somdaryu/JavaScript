@@ -70,6 +70,11 @@ let [a, b, c] = arr;
 
 console.log(a+" "+b+" "+c);
 
+//Q27
 let arr2 = ["사과", "바나나", "오렌지", "키위"];
 let [n1, , ,n4] = arr2;
 console.log(n1+"와 "+n4);
+
+//Q28
+let [a1, , a3,] = arr2;
+console.log(a1+"와 "+a3);
