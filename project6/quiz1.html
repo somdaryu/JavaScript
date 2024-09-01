@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {padding: 20px; min-width: 520px; max-width: 520px;}
+        input[type="text"]{width: 140px; border: 1px solid #b6b6b6;}
+        .textbox {position: relative;}
+        .maxcount {position: absolute; bottom: -50px; right: 0;}
+        textarea{width: 500px; height: 100px; border: 1px solid #b6b6b6;}
+        form {margin-left: 20px;}
+        form.info label {display: inline-block; width: 50px;}
+        .border-red{border: 2px solid red !important;}
+
+    </style>
+</head>
+<body>
+    <h1>프론트엔드 개발자 지원서</h1>
+    <p>HTML, CSS, Javascript에 대한 기술적 이해와 경험이 있는 분을 찾습니다</p>
+    <hr>
+
+
+    <h4>개인정보</h4>
+    <form action="" class="info">
+        <label for="name">이름</label>
+        <input type="text" id="name">
+        <br>
+        <label for="tel">연락처</label>
+        <input type="text" id="tel" oninput="checkNum(this)">
+    </form>
+    <br>
+
+    <h4>지원 분야</h4>
+    <form action="">
+        <input type="radio" id="pub" name="job"><label for="pub">웹 퍼블리싱</label>
+        <br>
+        <input type="radio" id="web" name="job"><label for="web">웹 애플리케이션 개발</label>
+        <br>
+        <input type="radio" id="develop" name="job"><label for="develop">개발 환경 개선</label>
+    </form>
+    <br>
+
+    <h4>지원 동기</h4>
+    <div class="textbox">
+        <textarea id="motivation" oninput = "count(this)"></textarea>
+        <p class="maxcount"><span id="counter">0</span>/30 글자</p>
+    </div>
+    <br>
+    <br>
+    <button onclick="checkForm()">접수하기</button>
+    <button>다시쓰기</button>
+
+    <script>
+        let tel = document.getElementById('tel');
+
+        function checkNum(tel){
+            let patt = /^[0-9]*$/;
+            if(!patt.test(tel.value)){
+                tel.style.borderColor = 'red';
+            }else {
+                tel.style.borderColor = '#b6b6b6';
+            }
+        }
+
+        let motive = document.getElementById('motivation');
+        let counter = document.getElementById('counter');
+
+        function count(letter) {
+            let current = letter.value.length;
+            if(current >= 30){
+                motive.style.color = 'red';
+                counter.innerHTML = current;
+            }else{
+                motive.style.color = 'black';
+                counter.innerHTML = current;
+            }
+        }
+
+        let name = document.getElementById('name');
+        let job = document.getElementsByName('job');
+        let message = "";
+        let isValid = true;
+
+        function checkForm() {
+            if(tel.value === ""){
+                isValid = false;
+                message += "연락처를 입력해주세요\n";
+            }
+
+            if(name.value === ""){
+                isValid = false;
+                message += "이름을 입력해주세요\n";
+            }
+
+            let isJobCheck = false;
+            for(let i=0; i<job.length; i++){
+                if(job[i].checked){
+                    isJobCheck = true;
+                    break;
+                }
+            }
+
+            if(!isJobCheck){
+                isValid = false;
+                message += "지원분야를 선택해주세요\n";
+            }
+
+            if(!isValid){
+                alert(message);
+            }
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {padding: 20px; min-width: 520px; max-width: 520px;}
+        input[type="text"]{width: 140px; border: 1px solid #b6b6b6; margin-bottom: 10px;}
+        .textbox {position: relative;}
+        .maxcount {position: absolute; bottom: -50px; right: 0;}
+        textarea{width: 500px; height: 100px; border: 1px solid #b6b6b6;}
+        form.info label {display: inline-block; width: 100px;}
+    </style>
+</head>
+<body>
+    <h2>온라인 쇼핑 장바구니</h2>
+    <form action="" class="info">
+        <label for="name">상품이름: </label>
+        <input type="text" id="name">
+        <br>
+        <label for="cnt">수량 :</label>
+        <input type="text" id="cnt" oninput="checkCntNum(this)">
+        <br>
+        <label for="price">가격(개당) :</label>
+        <input type="text" id="price" oninput="checkPriceNum(this)">
+    </form>
+    <br>
+    <button onclick="addCart()">장바구니에 추가</button>
+    <br>
+
+    <h2>장바구니</h2>
+    <ul id="cartUl">
+    </ul>
+    <p><span>총 수량: </span><span id="sumCnt"></span></p>
+    <p><span>총 가격: </span><span id="sumPrice"></span></p>
+
+    <script>
+        let name = document.getElementById('name');
+        let cnt = document.getElementById('cnt');
+        let price = document.getElementById('price');
+
+
+        function checkCntNum(v) {
+            let patt = /^[0-9]*$/
+            if(!patt.test(v.value)){
+                cnt.style.borderColor = 'red';
+            }else{
+                cnt.style.borderColor = '#b6b6b6';
+            }
+        }
+
+        function checkPriceNum(v){
+            let patt = /^[0-9]*$/
+            if(!patt.test(v.value)){
+                price.style.borderColor = 'red';
+            }else{
+                price.style.borderColor = '#b6b6b6';
+            }
+        }
+
+        function addCart() {
+            let isValid = true;
+            let message = "";
+            if (name.value.trim() === "") {
+                isValid = false;
+                message += "이름을 입력해주세요\n";
+            }
+
+            if (cnt.value.trim() === "" || isNaN(cnt.value) || parseInt(cnt.value) <= 0) {
+                isValid = false;
+                message += "수량을 입력해주세요\n";
+            }
+
+            if (price.value.trim() === "" || isNaN(price.value) || parseFloat(price.value) <= 0) {
+                isValid = false;
+                message += "가격을 입력해주세요\n";
+            }
+
+            if (!isValid) {
+                alert(message);
+                return;
+            } else {
+                sumCart(name.value.trim(), parseInt(cnt.value), parseFloat(price.value));
+            }
+        }
+
+        let cartUl = document.getElementById('cartUl');
+        let sumCnt = document.getElementById('sumCnt');
+        let sumPrice = document.getElementById('sumPrice');
+        let existLi = document.querySelectorAll('li')
+        let cartItems = [];
+
+        function sumCart(name, cnt, price) {
+            let itemTotal = cnt * price;
+            cartItems.push({ name, cnt, price, itemTotal });
+
+            cartUl.insertAdjacentHTML('beforeend',
+                `<li data-name="${name}" data-cnt="${cnt}" data-price="${price}" data-total="${itemTotal}">
+                    ${name} - ${cnt}개 ${(itemTotal).toFixed(2)}원 
+                    <button onclick="removeLi(this)">제거</button>
+                </li>`
+            );
+
+            updateTotal();
+        }
+        
+        function updateTotal() {
+            let totalCnt = cartItems.reduce((total, item) => total + item.cnt, 0);
+            let totalPrice = cartItems.reduce((total, item) => total + item.itemTotal, 0);
+
+            sumCnt.textContent = totalCnt;
+            sumPrice.textContent = totalPrice.toFixed(2);
+        }
+
+
+        function removeLi(button){
+            let li = button.parentElement;
+            let name = li.getAttribute('data-name');
+            let cnt = parseInt(li.getAttribute('data-cnt'));
+            let price = parseFloat(li.getAttribute('data-price'));
+            let itemTotal = parseFloat(li.getAttribute('data-total'));
+
+            cartItems = cartItems.filter(item =>
+                !(item.name === name && item.cnt === cnt && item.price === price)
+            );
+
+            li.remove();
+            updateTotal();
+        }
+
+    </script>
+</body>
+</html>
