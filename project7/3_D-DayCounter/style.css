@@ -1,0 +1,5 @@
+body { display: flex; flex-direction: column ; align-items: center;}
+h1 {font-size: 3rem;}
+button {margin-left: 0.5rem;}
+#dday-div {display: flex; font-size: 1.3rem;}
+#dday-div > div {margin-right: 1rem;}
