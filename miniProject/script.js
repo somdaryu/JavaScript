@@ -2,10 +2,20 @@
 let getData = localStorage.getItem("saved-list");
 let storageData = JSON.parse(getData);
 
+
+if(storageData != null){
+  for (let i of storageData) {
+    console.log(i);
+  }
+  
+} else {
+  console.log("스토리지에 저장된 데이터가 없습니다");
+}
+
 if(storageData != null){
   //li 개수 만큼 넘겨주기
-  for (let i = 0; i < storageData.length; i++) {
-    createTodoList(storageData[i]);
+  for (let i of storageData) {
+    createTodoList(i);
   }
 }
 
